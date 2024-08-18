@@ -14,96 +14,74 @@ titre = tk.Label(wind,text='Your Calculator',font=('Arial'),fg='white',bg='purpl
 titre.place(x=0,y=0,width=400,height=50)
 #input box
 input_box = tk.Entry(wind, bd = 1,bg ='white',font=('Aril'))
-input_box.place(x=50,y=60,width=300,height=30)
+input_box.place(x=80,y=60,width=300,height=30)
+#delete_function
+def delete_function():
+    current_text = input_box.get()
+    input_box.delete(len(current_text)-1, tk.END)
+    
+
 #functions
 def button_click(btn_num):
-    current_num = input_box.get()
+    current_text = input_box.get()
     input_box.delete(0,tk.END)
-    input_box.insert(0,str(current_num) + str(btn_num)  )
-
-
+    input_box.insert(0,str(current_text) + str(btn_num)  )
 #clear_button
 def button_clear():
     input_box.delete(0,tk.END)
     
 
-    
 # ADD FUNCTION
 def sum_numbers():
-    first_str_num = input_box.get()
-    
-    global first_num
     global op
+    current_text = input_box.get()
+    input_box.delete(0, tk.END)
+    input_box.insert(0, current_text + '+')
     
-    first_num = float(first_str_num)
-    op = "+"
-    input_box.delete(0,tk.END)
 
     
 #SUBTRACT FUN
 def subtract_numbers():
-    
-    global first_num
     global op
-    first_str_num = input_box.get()
-   
-    first_num = float(first_str_num)
-    
-    op = "-"
-    
-    input_box.delete(0,tk.END)
-
+    current_text = input_box.get()
+    input_box.delete(0, tk.END)
+    input_box.insert(0, current_text + '-')
     
 #Mult button
 def multiply_numbers():
-    
-    global first_num
     global op
-    first_str_num = input_box.get()
+    current_text = input_box.get()
+    input_box.delete(0, tk.END)
+    input_box.insert(0, current_text + 'x')
     
     
-    first_num = float(first_str_num)
-    
-    op = "x"
-    
-    input_box.delete(0,tk.END)
 #devide_butt
 def divide_numbers():
-    global first_num
     global op
-    first_str_num = input_box.get()
-    first_num = float(first_str_num)
-    op = "/"
-    input_box.delete(0,tk.END)
-
-
-    
+    current_text = input_box.get()
+    input_box.delete(0, tk.END)
+    input_box.insert(0, current_text + '/')
+ 
 #EQ FUNCTION
 def equ_butt():
-    second_num = input_box.get()
-    input_box.delete(0,tk.END)
-
-    if op == "+":
-        input_box.insert(0,first_num + float(second_num))
-    if op == "-":
-        input_box.insert(0,first_num - float(second_num))
-    if op == "x":
-        input_box.insert(0,first_num * float(second_num))
-    if op == "/":
-        try:
-            input_box.delete(0, tk.END)  # Efface le contenu de la boîte
-            input_box.insert(0, first_num / float(second_num))
-        except ZeroDivisionError:
-            wind.title("Erreur : Division par zéro")
-
-
-     
-        
+    current_text = input_box.get()  # Récupère le texte actuel dans le champ de saisie
     
- 
-    
+    try:
+        result = eval(current_text.replace('x', '*'))  # Remplace 'x' par '*' et évalue l'expression
+        input_box.delete(0, tk.END)  # Efface le contenu de la boîte
+        input_box.insert(0, str(result))  # Affiche le résultat
+    except ZeroDivisionError:
+        input_box.delete(0, tk.END)
+        input_box.insert(0, "Erreur : Division par zéro")
+    except Exception as e:
+        input_box.delete(0, tk.END)
+        input_box.insert(0, "Erreur")
+
 
 #define buttons
+#delete button
+butt_del = tk.Button(wind,text="Delete", bg ='white',bd = 0, command =  delete_function)
+butt_del.place(x=4,y=60,width=70,height=30)  
 #Button 1
 button1 =tk.Button(wind, text='1',bg ='white',font=('Aril'),bd=1, command = lambda: button_click(1))
 button1.place(x=0,y=100,width=100,height=100)
